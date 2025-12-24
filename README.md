@@ -1,4 +1,4 @@
-# Freelipino Computer Science Database
+# The Freelipino Computer Science Database
 
 A curated collection of computer science learning resources, organized by topic and resource type. The structure and syllabus are based on core computer science curricula from top Philippine universities.
 
