@@ -1,0 +1,1826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="An Open-Source Free + Filipino Computer Science Database. Making CS education accessible to all Filipinos.">
+  <title>The Freelipino Computer Science Database</title>
+  
+  <style>
+    /* CSS Variables and Base Styles */
+    :root {
+      --color-primary: #003049;
+      --color-secondary: #669bbc;
+      --color-background: #ffffff;
+      --color-text: #2d3436;
+      --color-text-light: #636e72;
+      --color-border: #e0e6ed;
+      --font-serif: Georgia, 'Times New Roman', Times, serif;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --max-width: 800px;
+      --spacing-xs: 0.5rem;
+      --spacing-sm: 1rem;
+      --spacing-md: 1.5rem;
+      --spacing-lg: 2rem;
+      --spacing-xl: 3rem;
+    }
+
+    /* Reset & Base */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-serif);
+      font-size: 1.0625rem;
+      line-height: 1.7;
+      color: var(--color-text);
+      background-color: var(--color-background);
+      padding: var(--spacing-md);
+    }
+
+    /* Layout */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--spacing-lg) 0;
+    }
+
+    header {
+      margin-bottom: var(--spacing-xl);
+      padding-bottom: var(--spacing-lg);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    main {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-xl);
+    }
+
+    section {
+      padding-top: var(--spacing-md);
+    }
+
+    /* Typography */
+    h1 {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--spacing-xs);
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-xs);
+      border-bottom: 2px solid var(--color-secondary);
+      display: inline-block;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-sm);
+      margin-top: var(--spacing-lg);
+    }
+
+    h4 {
+      font-size: 1.0625rem;
+      font-weight: 600;
+      color: var(--color-text);
+      margin-bottom: var(--spacing-xs);
+      margin-top: var(--spacing-md);
+    }
+
+    p {
+      margin-bottom: var(--spacing-sm);
+    }
+
+    .subtitle {
+      font-size: 1.125rem;
+      color: var(--color-text-light);
+      font-style: italic;
+    }
+
+    /* Links */
+    a {
+      color: var(--color-secondary);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+
+    a:hover,
+    a:focus {
+      border-bottom-color: var(--color-secondary);
+    }
+
+    /* Table of Contents */
+    .toc-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .toc-list li {
+      padding: var(--spacing-xs) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .toc-list li:last-child {
+      border-bottom: none;
+    }
+
+    .toc-list a {
+      font-size: 1.0625rem;
+      display: block;
+      padding: var(--spacing-xs) 0;
+    }
+
+    /* Legend / Category Badges */
+    .legend-grid {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+      margin-top: var(--spacing-md);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+
+    .category-badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      font-family: var(--font-sans);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      border-radius: 4px;
+      letter-spacing: 0.02em;
+    }
+
+    /* Category Colors - All dark blue */
+    .badge-courses,
+    .badge-lectures,
+    .badge-reading,
+    .badge-practice {
+      background-color: #e8f4fd;
+      color: #003049;
+      border: 1px solid #b8d4e8;
+    }
+
+    /* Special badges */
+    .badge-star {
+      background-color: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fcd34d;
+    }
+
+    .badge-filipino {
+      background-color: #fef2f2;
+      color: #991b1b;
+      border: 1px solid #fca5a5;
+    }
+
+    .badge-cert {
+      background-color: #f0fdf4;
+      color: #166534;
+      border: 1px solid #86efac;
+    }
+
+    /* Inline emoji badges */
+    .star-badge,
+    .ph-badge,
+    .cert-badge {
+      font-style: normal;
+      margin-left: 0.25rem;
+    }
+
+    /* Resource Lists */
+    .resource-section {
+      padding: var(--spacing-lg) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .resource-section:last-child {
+      border-bottom: none;
+    }
+
+    .resource-category {
+      margin-top: var(--spacing-md);
+    }
+
+    .resource-list {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    .resource-list li {
+      padding: var(--spacing-sm) 0;
+      padding-left: var(--spacing-md);
+      position: relative;
+    }
+
+    .resource-list li::before {
+      content: "—";
+      position: absolute;
+      left: 0;
+      color: var(--color-secondary);
+    }
+
+    .resource-title {
+      font-weight: 600;
+      color: var(--color-primary);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease, color 0.2s ease;
+    }
+
+    .resource-title:hover,
+    .resource-title:focus {
+      border-bottom-color: var(--color-primary);
+      color: var(--color-secondary);
+    }
+
+    .resource-description {
+      display: block;
+      margin-top: 0.25rem;
+      font-size: 0.9375rem;
+      color: var(--color-text-light);
+      font-style: italic;
+    }
+
+    /* Topic Sections */
+    .topic-section {
+      margin-top: var(--spacing-lg);
+      padding: var(--spacing-md);
+      background-color: #fafbfc;
+      border-radius: 8px;
+      border-left: 3px solid var(--color-secondary);
+    }
+
+    .topic-section h4 {
+      margin-top: 0;
+    }
+
+    .subtopic {
+      margin-top: var(--spacing-lg);
+      padding-top: var(--spacing-md);
+      border-top: 1px dashed var(--color-border);
+    }
+
+    .subtopic:first-of-type {
+      margin-top: var(--spacing-md);
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .subtopic-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      font-family: var(--font-sans);
+    }
+
+    /* Dividers */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-border),
+        transparent
+      );
+      margin: var(--spacing-xl) 0;
+    }
+
+    /* Major Section Headers */
+    .major-section {
+      margin-top: var(--spacing-xl);
+    }
+
+    .major-section-header {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: var(--spacing-md);
+      padding-bottom: var(--spacing-xs);
+      border-bottom: 3px solid var(--color-primary);
+    }
+
+    /* Responsive Design */
+    @media (max-width: 600px) {
+      body {
+        font-size: 1rem;
+        padding: var(--spacing-sm);
+      }
+
+      h1 {
+        font-size: 1.75rem;
+      }
+
+      h2 {
+        font-size: 1.25rem;
+      }
+
+      h3 {
+        font-size: 1.125rem;
+      }
+
+      .container {
+        padding: var(--spacing-md) 0;
+      }
+
+      .resource-list li {
+        padding-left: var(--spacing-sm);
+      }
+
+      .topic-section {
+        padding: var(--spacing-sm);
+      }
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        font-size: 11pt;
+      }
+
+      a {
+        color: var(--color-primary);
+      }
+
+      .category-badge {
+        border: 1px solid currentColor;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    
+    <!-- ============================================
+         HEADER / TITLE
+         ============================================ -->
+    <header>
+      <h1>The Freelipino Computer Science Database</h1>
+      <p class="subtitle">An Open-Source Free + Filipino Computer Science Database</p>
+    </header>
+
+    <main>
+      
+      <!-- ============================================
+           INTRODUCTION
+           ============================================ -->
+      <section id="introduction">
+        <h2>Introduction</h2>
+        <p>
+          To make Computer Science education accessible to all Filipinos—students, self-learners, 
+          and professionals—through a freely available, community-driven database.
+        </p>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           TABLE OF CONTENTS
+           ============================================ -->
+      <section id="table-of-contents">
+        <h2>Table of Contents</h2>
+        <nav>
+          <ul class="toc-list">
+            <li><a href="#start-here">New to CompSci? Start here</a></li>
+            <li><a href="#core-foundations">💾 Core Foundations</a></li>
+            <li><a href="#software-development">💾 Software Development</a></li>
+            <li><a href="#systems-networks">💾 Systems &amp; Networks</a></li>
+            <li><a href="#data-ai">💾 Data &amp; Artificial Intelligence</a></li>
+            <li><a href="#ethics-security">💾 Ethics &amp; Security</a></li>
+            <li><a href="#capstone-career">💾 Capstone &amp; Career Prep</a></li>
+          </ul>
+        </nav>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           LEGEND
+           ============================================ -->
+      <section id="legend">
+        <h2>Legend</h2>
+        <div class="legend-grid">
+          <div class="legend-item">
+            <span class="category-badge badge-star">⭐️ Highly Recommended</span>
+            <span>— Top-quality resource worth prioritizing</span>
+          </div>
+          <div class="legend-item">
+            <span class="category-badge badge-filipino">🇵🇭 Filipino/Tagalog</span>
+            <span>— Content in Filipino or Tagalog</span>
+          </div>
+          <div class="legend-item">
+            <span class="category-badge badge-cert">🏅 Free Certification</span>
+            <span>— Offers free certificate upon completion</span>
+          </div>
+        </div>
+        <div class="legend-grid" style="margin-top: var(--spacing-md);">
+          <p style="font-weight: 600; margin-bottom: 0.5rem;">Resource Categories:</p>
+          <div class="legend-item">
+            <span class="category-badge badge-courses">Courses</span>
+            <span>— Structured courses and curricula</span>
+          </div>
+          <div class="legend-item">
+            <span class="category-badge badge-lectures">Lecture Videos</span>
+            <span>— Video lectures and tutorials</span>
+          </div>
+          <div class="legend-item">
+            <span class="category-badge badge-reading">Reading Materials</span>
+            <span>— Articles, textbooks, and documentation</span>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           START HERE
+           ============================================ -->
+      <section id="start-here" class="major-section">
+        <h2 class="major-section-header">New to CompSci? Start here:</h2>
+
+        <div class="resource-category">
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/y2kg3MOk1sY?si=GuF65Z3bZSvjiVWU" target="_blank" rel="noopener noreferrer">freeCodeCamp's Computer &amp; Technology Basics Course for Absolute Beginners</a>
+              <span class="resource-description">
+                A beginner-friendly intro to how computers actually work, covering basic hardware, software, the internet, and everyday computer use. Great if you're starting from zero and want things explained simply.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo&si=7uz0_BGs4cfg5oIP" target="_blank" rel="noopener noreferrer">A Crash Course in Computer Science</a>
+              <span class="resource-description">
+                A fast-paced series that breaks down how computers evolved and how they work, from early machines to modern systems. It's easy to follow, engaging, and doesn't assume any prior background.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://cs50.harvard.edu/x/" target="_blank" rel="noopener noreferrer">CS50's Introduction to Computer Science with Certification</a> <span class="cert-badge">🏅</span>
+              <span class="resource-description">
+                A broad intro to computer science that mixes theory with hands-on problem solving using real code. Challenging but very rewarding, and great if you want a solid foundation.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/pages/syllabus/" target="_blank" rel="noopener noreferrer">MIT's Introduction To Computer Science And Programming In Python</a>
+              <span class="resource-description">
+                A more traditional university-style course that focuses on problem solving and programming with Python. Best if you like structured lectures and depth.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.khanacademy.org/computing/computer-science" target="_blank" rel="noopener noreferrer">Khan Academy's Computer Science Theory</a>
+              <span class="resource-description">
+                Covers core CS ideas like algorithms, data, and information using short lessons and visuals. Easy to follow and good for reinforcing concepts.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           CORE FOUNDATIONS
+           ============================================ -->
+      <section id="core-foundations" class="major-section">
+        <h2 class="major-section-header">💾 Core Foundations</h2>
+
+        <!-- Introduction to Computing -->
+        <div class="topic-section">
+          <h4>Introduction to Computing</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://oertx.highered.texas.gov/courseware/lesson/105/overview" target="_blank" rel="noopener noreferrer">COSC1301 Introduction to Computing</a>
+              <span class="resource-description">
+                A standard intro course that explains how computers work, how software fits together, and how computing is used in everyday life.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/JuLKB--zOho?si=OMSp_cVoVQVP5E_I" target="_blank" rel="noopener noreferrer">Introduction to Computing - Software and Hardware Fundamentals</a>
+              <span class="resource-description">
+                A clear overview of basic hardware and software concepts, explained in a straightforward way.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLmjsp1nGVUKd0vt35tZbdsV0PX_a5O4pl&si=otF2uyhIpS3MF1L5" target="_blank" rel="noopener noreferrer">Fundamentals of Computing Playlist</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A Filipino-made playlist that introduces computing basics using simple explanations and familiar examples.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://cs.calvin.edu/activities/books/processing/text/01computing.pdf" target="_blank" rel="noopener noreferrer">Introduction to Computing</a>
+              <span class="resource-description">
+                A beginner-friendly text that explains what computing is and why it matters, without heavy technical language.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.geeksforgeeks.org/computer-science-fundamentals/history-of-computers/" target="_blank" rel="noopener noreferrer">History of Computers</a>
+              <span class="resource-description">
+                A quick overview of how computers evolved, from early machines to modern systems.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.computerhistory.org/timeline/computers/" target="_blank" rel="noopener noreferrer">Timeline of Computers</a> <span class="star-badge">⭐️</span>
+              <span class="resource-description">
+                A visual timeline showing key moments and breakthroughs in computing history.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.livescience.com/20718-computer-history.html#section-19th-century" target="_blank" rel="noopener noreferrer">History of computers: A brief timeline</a>
+              <span class="resource-description">
+                A short, readable summary of major developments in computer history.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Programming Fundamentals -->
+        <div class="topic-section">
+          <h4>Programming Fundamentals (Python, C, Java)</h4>
+          
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmo27CVYZulSIbSaYDpEpzbg&si=qcmH5-smtSLmnLY5" target="_blank" rel="noopener noreferrer">Programming Fundamentals</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                Explains basic programming concepts like variables, loops, and logic using a beginner-friendly Filipino approach.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLRBUyvh6wWhEKZ4I9VH8mQz3YB8lRprAS&si=TCUc4UZgkYfZqAFd" target="_blank" rel="noopener noreferrer">A Filipino's Guide to Programming</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A gentle introduction to programming mindset and basics, aimed at absolute beginners.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLhwIOYE-ldwL-J79ZV2wbihRsY8P-A2RY&si=PByIJjI6Ir6UNX7L" target="_blank" rel="noopener noreferrer">Introduction to Programming and Computation</a>
+              <span class="resource-description">
+                Covers core ideas behind programming and problem solving, with a more academic tone.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://alg.manifoldapp.org/system/actioncallout/938a51a2-1c34-4867-b15f-3b24ee27bc4f/attachment/original-e8823f7f6c7fd593a70478f2cbb5b1b3.pdf" target="_blank" rel="noopener noreferrer">Programming Fundamentals</a>
+              <span class="resource-description">
+                A structured introduction to programming concepts, useful as a reference while learning.
+              </span>
+            </li>
+          </ul>
+
+          <!-- PYTHON -->
+          <div class="subtopic">
+            <p class="subtopic-title">Python</p>
+            
+            <p><span class="category-badge badge-courses">Courses</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://cs50.harvard.edu/python/" target="_blank" rel="noopener noreferrer">CS50's Introduction to Programming with Python</a> <span class="star-badge">⭐️</span> <span class="cert-badge">🏅</span>
+                <span class="resource-description">
+                  Focuses on learning programming through Python, with clear problems and practical examples.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.freecodecamp.org/learn/python-v9/" target="_blank" rel="noopener noreferrer">Python Certification - freeCodeCamp</a> <span class="star-badge">⭐️</span>
+                <span class="resource-description">
+                  A hands-on course that teaches Python through exercises and projects.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.learnpython.org" target="_blank" rel="noopener noreferrer">Learn Python</a> <span class="star-badge">⭐️</span>
+                <span class="resource-description">
+                  An interactive site where you learn Python by writing code directly in the browser.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://developers.google.com/edu/python" target="_blank" rel="noopener noreferrer">Google's Python Class</a>
+                <span class="resource-description">
+                  A practical Python course designed for people with some programming background.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmpbmB-Lrb2m4wwq5IPgLHnG&si=QNWUPJzTufPbQyMJ" target="_blank" rel="noopener noreferrer">Python Tutorial Series (Filipino | For Beginners)</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A step-by-step Python series explained in Filipino, ideal for beginners.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/LQA4WSg011k?si=Q3OXZcBISC5maFCy" target="_blank" rel="noopener noreferrer">Python Crash Course [TAGALOG]</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A fast-paced overview of Python basics, great for getting started quickly.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.youtube.com/playlist?list=PLZPZq0r_RZOOkUQbat8LyQii36cJf2SWT" target="_blank" rel="noopener noreferrer">Python Tutorial for Beginners</a>
+                <span class="resource-description">
+                  A full beginner playlist that slowly builds up Python concepts.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- C -->
+          <div class="subtopic">
+            <p class="subtopic-title">C</p>
+            
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLzXlW3L5PLJhkV_xaD3o7qSs6bV-LHPJm&si=BfnTC7z4zdV73bR3" target="_blank" rel="noopener noreferrer">C Programming Tutorial for Beginners</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  Introduces C programming fundamentals with clear explanations and examples in Filipino.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://beej.us/guide/bgc/" target="_blank" rel="noopener noreferrer">Beej's Guide to C Programming</a>
+                <span class="resource-description">
+                  A classic, beginner-friendly book that explains C in a clear and approachable way.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://colorcomputerarchive.com/repo/Documents/Books/The%20C%20Programming%20Language%20%28Kernighan%20Ritchie%29.pdf" target="_blank" rel="noopener noreferrer">The C Programming Language by K&amp;R</a>
+                <span class="resource-description">
+                  The original C book—short, dense, and best used as a reference once you know the basics.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- C# -->
+          <div class="subtopic">
+            <p class="subtopic-title">C#</p>
+            
+            <p><span class="category-badge badge-courses">Courses</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://www.freecodecamp.org/learn/foundational-c-sharp-with-microsoft/" target="_blank" rel="noopener noreferrer">Free Foundational C# with Microsoft Certification</a> <span class="star-badge">⭐️</span> <span class="cert-badge">🏅</span>
+                <span class="resource-description">
+                  A structured intro to C# with exercises and an optional certificate.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://learn.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/" target="_blank" rel="noopener noreferrer">C# Documentation (Tutorials, courses, videos, and more)</a>
+                <span class="resource-description">
+                  Official tutorials and explanations straight from Microsoft.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://thecsharpacademy.com" target="_blank" rel="noopener noreferrer">Learn .NET/C# With Real Projects</a>
+                <span class="resource-description">
+                  A project-based site that helps you learn C# by actually building things.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmr_K2Gn9WWZI4ulrkEUll_s&si=0bToPQkVdEIhmpVx" target="_blank" rel="noopener noreferrer">C# Tutorial Series (Filipino | For Beginners)</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A beginner-friendly Filipino playlist covering C# basics.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="http://www.csharpcourse.com" target="_blank" rel="noopener noreferrer">C# Yellow Book</a>
+                <span class="resource-description">
+                  A well-known beginner book that explains C# concepts clearly and patiently.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- C++ -->
+          <div class="subtopic">
+            <p class="subtopic-title">C++</p>
+            
+            <p><span class="category-badge badge-courses">Courses</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://www.learncpp.com" target="_blank" rel="noopener noreferrer">Learn C++</a> <span class="star-badge">⭐️</span>
+                <span class="resource-description">
+                  A detailed, well-organized site that teaches C++ from the ground up.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.studyplan.dev/cpp" target="_blank" rel="noopener noreferrer">C++ Resources</a>
+                <span class="resource-description">
+                  A curated set of C++ learning materials and references.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLLYkc0tCeqDXxEpqy5KHOVBfO8RWYPF1V&si=4FoufU1PXAN0e8Ne" target="_blank" rel="noopener noreferrer">C++ Tutorial Playlist: Tagalog | Filipino</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  Explains C++ fundamentals in Filipino, aimed at beginners.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmrAk6XdaioMlfmpD_ahnA-B&si=6Wtl3sRyxs1G0poZ" target="_blank" rel="noopener noreferrer">C++ Tutorial Series (Filipino | For Beginners)</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  Another Filipino beginner series focusing on core C++ concepts.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="http://www.cppreference.com" target="_blank" rel="noopener noreferrer">C++ Language Reference</a>
+                <span class="resource-description">
+                  The go-to reference for C++ syntax and standard library details.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- JAVA -->
+          <div class="subtopic">
+            <p class="subtopic-title">Java</p>
+            
+            <p><span class="category-badge badge-courses">Courses</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://java-programming.mooc.fi" target="_blank" rel="noopener noreferrer">Java Programming MOOC</a> <span class="cert-badge">🏅</span>
+                <span class="resource-description">
+                  A highly structured Java course that teaches through lots of coding practice.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLLYkc0tCeqDVoo_H8Iymqqn4akGp9PAyU&si=z0z2ZxR0uMjuwiOM" target="_blank" rel="noopener noreferrer">Object Oriented Programming with Java | Tagalog</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  Focuses on OOP concepts in Java, explained in Tagalog.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmpzFnP_wofuPrUfa0xoxT4f&si=Bt9n6JE3Prd7H5qg" target="_blank" rel="noopener noreferrer">Java Tutorial Series (Filipino | For Beginners)</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A beginner-friendly Java playlist in Filipino.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PL59LTecnGM1NRUyune3SxzZlYpZezK-oQ&si=W_DElmUwOj4i7FKj" target="_blank" rel="noopener noreferrer">Full Java Course</a>
+                <span class="resource-description">
+                  A comprehensive Java playlist covering basics to more advanced topics.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Discrete Structures -->
+        <div class="topic-section">
+          <h4>Discrete Structures</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://ocw.mit.edu/courses/6-042j-mathematics-for-computer-science-fall-2010/pages/syllabus/" target="_blank" rel="noopener noreferrer">Mathematics for Computer Science Course</a>
+              <span class="resource-description">
+                Covers logic, proofs, sets, graphs, and other math used heavily in CS.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLIQh59u-CUot_hBGW7_nYplCMUgkdtFTA&si=dWNBrzhK4-hLK4tC" target="_blank" rel="noopener noreferrer">Discrete Math</a> <span class="star-badge">⭐️</span> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                Explains discrete math topics using clear Filipino explanations.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/G9JxuWk7BDA?si=f194STip2Nlp0AVf" target="_blank" rel="noopener noreferrer">Discrete Mathematics Course for Beginners</a>
+              <span class="resource-description">
+                A full beginner-friendly overview of discrete math concepts.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLDDGPdw7e6Aj0amDsYInT_8p6xTSTGEi2&si=OqZLCwuIxhWB-_fw" target="_blank" rel="noopener noreferrer">Discrete Math</a>
+              <span class="resource-description">
+                Covers core discrete math topics with worked examples.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://discrete.openmathbooks.org/dmoi4/frontmatter.html" target="_blank" rel="noopener noreferrer">Discrete Mathematics: An Open Introduction</a>
+              <span class="resource-description">
+                A free textbook that explains discrete math clearly, with examples and exercises.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://cims.nyu.edu/~regev/teaching/discrete_math_fall_2005/dmbook.pdf" target="_blank" rel="noopener noreferrer">Discrete Mathematics</a>
+              <span class="resource-description">
+                More formal lecture notes, useful as a reference or supplement.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           SOFTWARE DEVELOPMENT
+           ============================================ -->
+      <section id="software-development" class="major-section">
+        <h2 class="major-section-header">💾 Software Development</h2>
+
+        <!-- Data Structures and Algorithms -->
+        <div class="topic-section">
+          <h4>Data Structures and Algorithms</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.freecodecamp.org/learn/javascript-algorithms-and-data-structures-v8/" target="_blank" rel="noopener noreferrer">Learn JavaScript Algorithms and Data Structures</a> <span class="star-badge">⭐️</span> <span class="cert-badge">🏅</span>
+              <span class="resource-description">
+                Teaches core algorithms and data structures through hands-on JavaScript projects and exercises.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL2_aWCzGMAwI3W_JlcBbtYTwiQSsOTa6P&si=4fJ2OIYTv4TPDwVJ" target="_blank" rel="noopener noreferrer">Data Structures</a> <span class="star-badge">⭐️</span>
+              <span class="resource-description">
+                A clear, structured walkthrough of common data structures with explanations that focus on how and why they work.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL6kEKeEQ6V4WvEdbQzGI7eHPZWMJFsQsu&si=lj_jPly3ahJ6DIQ3" target="_blank" rel="noopener noreferrer">Data Structure and Algorithm Lecture Series</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                Explains DSA concepts in Filipino, making complex topics easier to digest for beginners.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmrAGOqcrX06rNqaCSafSGi_&si=l0zZnpsIVKhA7C5P" target="_blank" rel="noopener noreferrer">Data Structures and Algorithm Tutorial Series (Filipino | For Beginners)</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A beginner-focused playlist that introduces data structures and algorithms step by step.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLZPZq0r_RZON1eaqfafTnEexRzuHbfZX8&si=o0TxGLay3jjdtCdo" target="_blank" rel="noopener noreferrer">Data Structures and Algorithms</a>
+              <span class="resource-description">
+                Well-known lectures that focus on intuition and problem-solving rather than just code.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/8hly31xKli0?si=keqOoxrD4nSi2pKC" target="_blank" rel="noopener noreferrer">Algorithms and Data Structures</a>
+              <span class="resource-description">
+                A long-form video that covers the basics of algorithms and data structures in one continuous course.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Object-Oriented Programming -->
+        <div class="topic-section">
+          <h4>Object-Oriented Programming</h4>
+          
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/SiBw7os-_zI?si=Z-MOE8_GVcPPUZtQ" target="_blank" rel="noopener noreferrer">Intro to Object-Oriented Programming</a>
+              <span class="resource-description">
+                A short introduction to core OOP ideas like classes, objects, and inheritance.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLGLfVvz_LVvS5P7khyR4xDp7T9lCk9PgE&si=Uxuz16moCozK4LHq" target="_blank" rel="noopener noreferrer">Object-Oriented Design</a>
+              <span class="resource-description">
+                Focuses on designing programs using OOP principles, not just writing code.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLrhzvIcii6GNjpARdnO4ueTUAVR9eMBpc&si=y1_U2Ou0rhUffnbi" target="_blank" rel="noopener noreferrer">Design Patterns in Object Oriented Programming</a>
+              <span class="resource-description">
+                Explains common design patterns and when to use them in real software projects.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/Ej_02ICOIgs?si=Nvv6NsFtuQdmYFPN" target="_blank" rel="noopener noreferrer">Object-Oriented Programming (OOP) with Python - Full Course for Beginners</a>
+              <span class="resource-description">
+                A beginner-friendly course that teaches OOP concepts using Python examples.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/wN0x9eZLix4?si=mwyBaXECosNxrwSq" target="_blank" rel="noopener noreferrer">Object-Oriented Programming (OOP) in C++ Course</a>
+              <span class="resource-description">
+                Covers OOP principles specifically in the context of C++ syntax and design.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Software Engineering Principles -->
+        <div class="topic-section">
+          <h4>Software Engineering Principles</h4>
+
+          <!-- SDLC -->
+          <div class="subtopic">
+            <p class="subtopic-title">SDLC</p>
+            
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtu.be/3uJnEx1mpWI?si=eR8vSaJho0CFBWpo" target="_blank" rel="noopener noreferrer">Software Development Life Cycle</a>
+                <span class="resource-description">
+                  Explains how software moves from idea to deployment, covering the main stages of development.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://www.geeksforgeeks.org/software-engineering/software-development-life-cycle-sdlc/" target="_blank" rel="noopener noreferrer">SDLC Overview</a>
+                <span class="resource-description">
+                  A concise breakdown of SDLC phases with simple explanations and a short quiz.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Version Control -->
+          <div class="subtopic">
+            <p class="subtopic-title">Version Control</p>
+            
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLoAp90RrCnA0YEXFC0K0WnUd5GjwLXhbN&si=emlSyFOXHYSgqlhn" target="_blank" rel="noopener noreferrer">Git and Github Tutorial Series for Beginners | Tagalog</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A Filipino beginner series that explains Git and GitHub from scratch.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLRBUyvh6wWhGs3IMmpK9FX7tKTYo_B4i7&si=WPv6DqZhho2PaB_r" target="_blank" rel="noopener noreferrer">Basics and Applications of Git and Github</a>
+                <span class="resource-description">
+                  Covers core Git commands and shows how version control is used in real projects.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/RGOj5yH7evk?si=DpcgiEdXj85ilLjH" target="_blank" rel="noopener noreferrer">Git and Github for Beginners</a>
+                <span class="resource-description">
+                  A full beginner video that walks through Git basics and GitHub workflows.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://git-scm.com/book/en/v2" target="_blank" rel="noopener noreferrer">Pro Git Book - Scott Chacon and Ben Straub</a>
+                <span class="resource-description">
+                  The official Git book, covering everything from basics to advanced workflows.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="http://www.cheat-sheets.org/saved-copy/git-cheat-sheet.pdf" target="_blank" rel="noopener noreferrer">Git Cheat Sheet</a>
+                <span class="resource-description">
+                  A quick reference for common Git commands and usage.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://docs.github.com/en/get-started/git-basics/set-up-git" target="_blank" rel="noopener noreferrer">Set Up Git - GitHub</a>
+                <span class="resource-description">
+                  Step-by-step instructions for installing and configuring Git.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Testing Principles -->
+          <div class="subtopic">
+            <p class="subtopic-title">Testing Principles</p>
+            
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLedmK0jZBQviD_Pr92WmJNVZrd8JnvOrQ&si=9IWnWmz0dEMV9ai5" target="_blank" rel="noopener noreferrer">Software Testing 101</a>
+                <span class="resource-description">
+                  Introduces testing fundamentals, including types of tests and why testing matters.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/Y4ePqxtYBqI?si=w4BtK8HnbsBOMcd2" target="_blank" rel="noopener noreferrer">Software Testing Basics</a>
+                <span class="resource-description">
+                  A short overview of testing concepts and common testing approaches.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://medium.com/@hautel.alex2000/effective-software-testing-a-developers-guide-2ecf13744aaf" target="_blank" rel="noopener noreferrer">Effective Software Testing: A Developer's Guide</a>
+                <span class="resource-description">
+                  Explains how developers can write meaningful tests, with practical examples.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Web Development -->
+        <div class="topic-section">
+          <h4>Web Development (Frontend + Backend)</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.freecodecamp.org/learn/full-stack-developer-v9/" target="_blank" rel="noopener noreferrer">Certified Full Stack Developer Curriculum</a> <span class="cert-badge">🏅</span>
+              <span class="resource-description">
+                A full learning path covering frontend, backend, and databases through projects.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.theodinproject.com/paths" target="_blank" rel="noopener noreferrer">The Odin Project - Tutorial Project</a>
+              <span class="resource-description">
+                A project-based curriculum that teaches web development by building real applications.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://developer.mozilla.org/en-US/docs/Learn_web_development" target="_blank" rel="noopener noreferrer">MDN Learn Web Development</a>
+              <span class="resource-description">
+                Official Mozilla tutorials that explain web fundamentals clearly and thoroughly.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmqJul8qc11jibcZXiPTgbR5&si=ohUop0A3BxGibKjt" target="_blank" rel="noopener noreferrer">Web Development Tutorial Series (Filipino | Tagalog | For Complete Beginners)</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A complete beginner series in Filipino covering frontend web development basics.
+              </span>
+            </li>
+          </ul>
+
+          <!-- HTML/CSS -->
+          <div class="subtopic">
+            <p class="subtopic-title">HTML/CSS</p>
+            
+            <p><span class="category-badge badge-courses">Courses</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://www.freecodecamp.org/learn/responsive-web-design-v9/" target="_blank" rel="noopener noreferrer">Responsive Web Design Certification - freeCodeCamp</a> <span class="cert-badge">🏅</span>
+                <span class="resource-description">
+                  Teaches HTML and CSS through hands-on projects focused on responsive layouts.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.w3schools.com/html/default.asp" target="_blank" rel="noopener noreferrer">HTML Tutorial - w3schools</a>
+                <span class="resource-description">
+                  A simple, interactive reference for learning HTML basics.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.w3schools.com/css/default.asp" target="_blank" rel="noopener noreferrer">CSS Tutorial - w3schools</a>
+                <span class="resource-description">
+                  Covers CSS fundamentals with examples you can try directly in the browser.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtu.be/HGTJBPNC-Gw?si=pIxaVUHOVYgNTtuQ" target="_blank" rel="noopener noreferrer">HTML &amp; CSS Full Course for Free - Bro Code</a>
+                <span class="resource-description">
+                  A straightforward crash course covering HTML and CSS from start to finish.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/G3e-cpL7ofc?si=NMAPQID9PbbChS2X" target="_blank" rel="noopener noreferrer">HTML &amp; CSS Full Course - Beginner to Pro - SuperSimpleDev</a>
+                <span class="resource-description">
+                  A longer, more detailed course focused on clean layout and styling.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/hhIDcq-nrBI?si=jZyxV1618n1u-zRT" target="_blank" rel="noopener noreferrer">HTML for Beginners [TAGALOG] - PinoyFreeCoder</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  Introduces HTML basics in Tagalog with beginner-friendly pacing.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/4tw6hNeGm5g?si=d5mZPyLeETYRP5IQ" target="_blank" rel="noopener noreferrer">CSS Full Course [TAGALOG] - PinoyFreeCoder</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  Introduces CSS basics in Tagalog with beginner-friendly pacing.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- JavaScript -->
+          <div class="subtopic">
+            <p class="subtopic-title">JavaScript</p>
+            
+            <p><span class="category-badge badge-courses">Courses</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide" target="_blank" rel="noopener noreferrer">JavaScript Guide - Mozilla Developers Network</a>
+                <span class="resource-description">
+                  A detailed reference-style guide to JavaScript fundamentals and behavior.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript" target="_blank" rel="noopener noreferrer">JavaScript Course - The Odin Project</a>
+                <span class="resource-description">
+                  Teaches JavaScript through exercises and projects tied to web development.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://javascript.info" target="_blank" rel="noopener noreferrer">The Modern JavaScript Tutorial</a>
+                <span class="resource-description">
+                  A well-written, in-depth tutorial that explains JavaScript concepts clearly.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://www.freecodecamp.org/learn/javascript-v9/" target="_blank" rel="noopener noreferrer">JavaScript Certification - freeCodeCamp</a> <span class="cert-badge">🏅</span>
+                <span class="resource-description">
+                  A hands-on JavaScript course focused on practice and projects with free certification once completed.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmp5SRFPKsy61BeWozI3mwcV&si=P8wkynlK8jNDwHym" target="_blank" rel="noopener noreferrer">JavaScript Tutorial Series (Filipino | Tagalog | For Complete Beginners)</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A beginner JavaScript series explained in Filipino.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/CgkZ7MvWUAA?si=IFVaq9t_6qKT-8OT" target="_blank" rel="noopener noreferrer">React Full Course for Free - Bro Code</a>
+                <span class="resource-description">
+                  Introduces React fundamentals and core concepts in a single long-form video.
+                </span>
+              </li>
+              <li>
+                <a class="resource-title" href="https://youtu.be/FdAYBwt1z-4?si=VzNVzHV0um5jx4MU" target="_blank" rel="noopener noreferrer">React.js Full Tutorial [TAGALOG] - PinoyFreeCoder</a> <span class="ph-badge">🇵🇭</span>
+                <span class="resource-description">
+                  A Tagalog-based React tutorial focused on building components and apps.
+                </span>
+              </li>
+            </ul>
+
+            <p><span class="category-badge badge-reading">Reading Materials</span></p>
+            <ul class="resource-list">
+              <li>
+                <a class="resource-title" href="https://devhints.io/react" target="_blank" rel="noopener noreferrer">React.js Cheat Sheet</a>
+                <span class="resource-description">
+                  A quick reference for common React patterns and syntax.
+                </span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           SYSTEMS & NETWORKS
+           ============================================ -->
+      <section id="systems-networks" class="major-section">
+        <h2 class="major-section-header">💾 Systems &amp; Networks</h2>
+
+        <!-- Operating Systems -->
+        <div class="topic-section">
+          <h4>Operating Systems</h4>
+          
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLBlnK6fEyqRiVhbXDGLXDk_OQAeuVcp2O&si=PpBiY8CavfGecR0t" target="_blank" rel="noopener noreferrer">Operating System - Neso Academy</a>
+              <span class="resource-description">
+                A structured playlist covering processes, memory, scheduling, and OS fundamentals.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://pages.cs.wisc.edu/~remzi/OSTEP/#book-chapters" target="_blank" rel="noopener noreferrer">Operating Systems: Three Easy Pieces (OSTEP)</a>
+              <span class="resource-description">
+                A highly respected OS book that explains concepts clearly with practical examples.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://wiki.osdev.org/Expanded_Main_Page" target="_blank" rel="noopener noreferrer">Operating Systems Wiki and Forum</a>
+              <span class="resource-description">
+                A deep technical resource for low-level OS development and concepts.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://github.com/darshanime/notes/blob/master/operating_systems.org" target="_blank" rel="noopener noreferrer">Operating Systems Lecture Notes</a>
+              <span class="resource-description">
+                Concise lecture notes covering core OS topics, useful for review and reference.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Computer Architecture -->
+        <div class="topic-section">
+          <h4>Computer Architecture</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://safari.ethz.ch/digitaltechnik/spring2020/doku.php?id=schedule" target="_blank" rel="noopener noreferrer">Digital Design and Computer Architecture</a>
+              <span class="resource-description">
+                A highly recommended course that covers how hardware components work together.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://ocw.mit.edu/courses/6-004-computation-structures-spring-2017/pages/syllabus/" target="_blank" rel="noopener noreferrer">Computation Structures</a>
+              <span class="resource-description">
+                Explains digital logic, processors, and system-level design.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.nand2tetris.org/course" target="_blank" rel="noopener noreferrer">From Nand to Tetris: Building a Modern Computer from First Principles</a>
+              <span class="resource-description">
+                Builds a computer from scratch, starting with logic gates and ending with a working system.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL5Q2soXY2Zi_QedyPWtRmFUJ2F8DdYP7l&si=p2Px_RPGJ8C_QIls" target="_blank" rel="noopener noreferrer">Design of Digital Circuits</a>
+              <span class="resource-description">
+                A playlist that focuses on digital logic and circuit-level design.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLFt_AvWsXl0dPhqVsKt1Ni_46ARyiCGSq&si=HZypmMfgBMQAsskT" target="_blank" rel="noopener noreferrer">Exploring How Computers Work - Sebastian Lague</a>
+              <span class="resource-description">
+                Visual explanations of how CPUs, memory, and low-level systems operate.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://eater.net/8bit" target="_blank" rel="noopener noreferrer">Build an 8-bit Computer from Scratch - Ben Eater</a>
+              <span class="resource-description">
+                A hands-on series showing how a simple computer works at the hardware level.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL9vTTBa7QaQOoMfpP3ztvgyQkPWDPfJez&si=_a4y_8DN0IVxiTut" target="_blank" rel="noopener noreferrer">Computer Architecture from Scratch - Core Dumped</a>
+              <span class="resource-description">
+                Explains architecture concepts step by step using simple examples.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Computer Networks -->
+        <div class="topic-section">
+          <h4>Computer Networks</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.netacad.com/courses/networking-basics?courseLang=en-US" target="_blank" rel="noopener noreferrer">Networking Basics - Cisco Networking Academy</a>
+              <span class="resource-description">
+                An introductory course covering how networks work and communicate.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLIFyRwBY_4bRLmKfP1KnZA6rZbRHtxmXi&si=6rstlq1D4Jc3I574" target="_blank" rel="noopener noreferrer">Networking Fundamentals - Practical Networking</a>
+              <span class="resource-description">
+                Explains networking concepts clearly, with a focus on real-world understanding.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/qiQR5rTSshw?si=3PSum4PAtZEVcPmc" target="_blank" rel="noopener noreferrer">Computer Networking Course - Network Engineering [CompTIA Network + Exam Prep] - freeCodeCamp</a>
+              <span class="resource-description">
+                A full beginner course covering networking fundamentals and protocols.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLaagW6hCBws8180SILsXJHr-L6BA4moAs&si=EF58IajQgg3yiShg" target="_blank" rel="noopener noreferrer">Cisco CCNA Series Training - Lou Beltran</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                CCNA-focused networking lessons explained in Filipino.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLZsRyjXwovA4A0h8t1ZKQ1D6xE5N2t2FB&si=Zv95EXqKNczeSZUJ" target="_blank" rel="noopener noreferrer">Networking Playlist - IT Tutorials PH</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A Filipino playlist covering basic networking concepts and tools.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://book.systemsapproach.org/index.html" target="_blank" rel="noopener noreferrer">Computer Networks: A System Approach - Larry Peterson and Bruce Davie</a>
+              <span class="resource-description">
+                A well-known networking book that explains how network systems are designed and work together.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           DATA & ARTIFICIAL INTELLIGENCE
+           ============================================ -->
+      <section id="data-ai" class="major-section">
+        <h2 class="major-section-header">💾 Data &amp; Artificial Intelligence</h2>
+
+        <!-- Database Systems -->
+        <div class="topic-section">
+          <h4>Database Systems</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://cs50.harvard.edu/sql/" target="_blank" rel="noopener noreferrer">CS50's Introduction to Databases with SQL</a>
+              <span class="resource-description">
+                A beginner-friendly intro to databases that focuses on SQL fundamentals and how databases actually work behind the scenes.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://learn.mongodb.com/learning-paths/introduction-to-mongodb" target="_blank" rel="noopener noreferrer">Introduction to MongoDB</a>
+              <span class="resource-description">
+                Covers the basics of NoSQL databases using MongoDB, including documents, collections, and common queries.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLSE8ODhjZXjbj8BMuIrRcacnQh20hmY9g&si=gnurESQw6NZyWVxi" target="_blank" rel="noopener noreferrer">CMU Intro to Database Systems (15-445/645 - Fall 2023)</a>
+              <span class="resource-description">
+                A rigorous university-level course that dives deep into database internals, query processing, and system design.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.youtube.com/watch?v=4cWkVbC2bNE" target="_blank" rel="noopener noreferrer">Database Systems - Cornell University Course (SQL, NoSQL, Large-Scale Data Analysis)</a>
+              <span class="resource-description">
+                An overview of SQL, NoSQL, and large-scale data systems, with a focus on real-world database use cases.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLBlnK6fEyqRi_CUQ-FXxgzKQ1dwr_ZJWZ&si=zogfWREh92Jh6tjV" target="_blank" rel="noopener noreferrer">Database Management Systems - Neso Academy</a>
+              <span class="resource-description">
+                Explains DBMS concepts clearly, making it easier to understand theory like normalization, indexing, and transactions.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLVnJhHoKgEmpKvMh-wio-7FOouf9Fa0a8&si=gTWAqjg-CA6f7W-Z" target="_blank" rel="noopener noreferrer">SQL Tutorial Series (Filipino | Tagalog | For Complete Beginners)</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A beginner-oriented SQL series explained in Tagalog, good for learning queries step by step.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLNPh8a6U-mrgMlIW5UCQzerITEev-GV4N&si=cPlR8GGaUrTr0z3D" target="_blank" rel="noopener noreferrer">SQL Basics: SQL Tagalog Tutorial - Samuel Uy</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                Straightforward SQL lessons in Tagalog, focused on core commands and practice.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/c2M-rlkkT5o?si=qKuNd6kfq3Qm32_G" target="_blank" rel="noopener noreferrer">Learn MongoDB in One Hour - Bro Code</a>
+              <span class="resource-description">
+                A fast-paced crash course that introduces MongoDB concepts without going too deep.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/BVu2P3mn5jI?si=3d02OxS2pqlgXwyc" target="_blank" rel="noopener noreferrer">MongoDB Introduction [Tagalog]</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A simple Tagalog walkthrough of MongoDB basics, ideal if you're new to NoSQL.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://selectstarsql.com" target="_blank" rel="noopener noreferrer">Select Star SQL</a>
+              <span class="resource-description">
+                An interactive way to learn SQL by solving problems instead of just reading syntax.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.w3schools.com/sql/" target="_blank" rel="noopener noreferrer">SQL Tutorial</a>
+              <span class="resource-description">
+                A quick reference for SQL basics with examples you can test instantly.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://learn.mongodb.com" target="_blank" rel="noopener noreferrer">Learn MongoDB</a>
+              <span class="resource-description">
+                Official MongoDB learning resources covering fundamentals to more advanced topics.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Data Science -->
+        <div class="topic-section">
+          <h4>Data Science</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.kaggle.com/learn/python" target="_blank" rel="noopener noreferrer">Python for Data Science Course</a>
+              <span class="resource-description">
+                Introduces Python basics with a focus on data-related tasks and exercises.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.kaggle.com/learn/pandas" target="_blank" rel="noopener noreferrer">Pandas Course</a>
+              <span class="resource-description">
+                Teaches data manipulation using Pandas through short, hands-on lessons.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.kaggle.com/learn/data-cleaning" target="_blank" rel="noopener noreferrer">Data Cleaning Course</a>
+              <span class="resource-description">
+                Focuses on cleaning messy datasets, handling missing values, and fixing common issues.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.kaggle.com/learn/data-visualization" target="_blank" rel="noopener noreferrer">Data Visualization Course</a>
+              <span class="resource-description">
+                Covers basic plotting and visualization techniques to make data easier to understand.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.khanacademy.org/math/statistics-probability" target="_blank" rel="noopener noreferrer">Statistics and Probability</a>
+              <span class="resource-description">
+                A solid foundation in stats concepts that show up constantly in data science.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/ua-CiDNNj30?si=r_nUES7Q4wnqkEUv" target="_blank" rel="noopener noreferrer">Learn Data Science Tutorial - Full Course for Beginners - freeCodeCamp</a>
+              <span class="resource-description">
+                A long-form beginner course that walks through the full data science workflow.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/KxryzSO1Fjs?si=5UDcxrGEeBB7Zr_w" target="_blank" rel="noopener noreferrer">Data Science for Beginners</a>
+              <span class="resource-description">
+                A high-level overview of what data science is and how different tools fit together.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PLeo1K3hjS3uuKaU2nBDwr6zrSOTzNCs0l&si=1lPcZagi4TbctPKq" target="_blank" rel="noopener noreferrer">Mathematics, Statistics for Data Science and Machine Learning</a>
+              <span class="resource-description">
+                Breaks down the math behind data science and machine learning in a practical way.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="http://learnds.com" target="_blank" rel="noopener noreferrer">Learn Data Science</a>
+              <span class="resource-description">
+                An introductory guide that explains data science concepts without heavy math.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="http://www.w3schools.com/datascience/" target="_blank" rel="noopener noreferrer">Data Science Tutorial</a>
+              <span class="resource-description">
+                A light overview of data science topics, useful for quick explanations.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://jakevdp.github.io/PythonDataScienceHandbook/" target="_blank" rel="noopener noreferrer">Python Data Science Handbook</a>
+              <span class="resource-description">
+                A well-written reference for NumPy, Pandas, Matplotlib, and related tools.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Artificial Intelligence -->
+        <div class="topic-section">
+          <h4>Artificial Intelligence</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.coursera.org/learn/ai-for-everyone" target="_blank" rel="noopener noreferrer">AI for Everyone</a>
+              <span class="resource-description">
+                A non-technical overview of AI concepts, impacts, and limitations.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://cs50.harvard.edu/ai/" target="_blank" rel="noopener noreferrer">Harvard CS50's Introduction to Artificial Intelligence with Python</a>
+              <span class="resource-description">
+                Covers classic AI techniques like search, optimization, and machine learning using Python.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://ocw.mit.edu/courses/6-034-artificial-intelligence-fall-2010/" target="_blank" rel="noopener noreferrer">MIT's Artificial Intelligence Course</a>
+              <span class="resource-description">
+                A theory-heavy course that explains how AI algorithms work at a conceptual level.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://developers.google.com/machine-learning/crash-course" target="_blank" rel="noopener noreferrer">Google's Machine Learning Crash Course</a>
+              <span class="resource-description">
+                A practical intro to machine learning with short lessons and hands-on examples.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://course.fast.ai" target="_blank" rel="noopener noreferrer">Practical Deep Learning for Coders</a>
+              <span class="resource-description">
+                Focuses on building real models quickly while learning theory along the way.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/joAIbXR1X2Y?si=G1UM_QYFTPJAFMU6" target="_blank" rel="noopener noreferrer">Understanding Artificial Intelligence - Tech Academy</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A Tagalog overview of AI concepts, applications, and common misconceptions.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           ETHICS & SECURITY
+           ============================================ -->
+      <section id="ethics-security" class="major-section">
+        <h2 class="major-section-header">💾 Ethics &amp; Security</h2>
+
+        <!-- Cybersecurity -->
+        <div class="topic-section">
+          <h4>Cybersecurity</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://tryhackme.com/hacktivities?tab=roadmap" target="_blank" rel="noopener noreferrer">Cybersecurity Learning Roadmap - TryHackMe</a>
+              <span class="resource-description">
+                A structured path that teaches cybersecurity concepts through hands-on labs.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.netacad.com/courses/introduction-to-cybersecurity?courseLang=en-US" target="_blank" rel="noopener noreferrer">Introduction to Cybersecurity - Cisco Networking Academy</a>
+              <span class="resource-description">
+                Explains core security concepts, threats, and best practices for beginners.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://cybersecuritybase.mooc.fi" target="_blank" rel="noopener noreferrer">Cybersecurity Base 2025</a>
+              <span class="resource-description">
+                A university-level MOOC that blends theory with practical security thinking.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/_DVVNOGYtmU?si=mNE1PSxdJvcTCHFL" target="_blank" rel="noopener noreferrer">Google Cybersecurity Courses</a>
+              <span class="resource-description">
+                Covers security fundamentals, tools, and workflows used in real jobs.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/-TTuPDbSmoI?si=hfR5Xv5jFcE47ptL" target="_blank" rel="noopener noreferrer">Introduction to Cybersecurity (Tagalog) - IT Tutorials PH</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                Explains basic cybersecurity ideas in Tagalog, aimed at absolute beginners.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL9AwwMrgRCKmBkVAz02i56kCM5aubngSy&si=biYEeQNL4Ur5u--h" target="_blank" rel="noopener noreferrer">Cybersecurity for Beginners (Tagalog) - JSEC PH</a> <span class="ph-badge">🇵🇭</span>
+              <span class="resource-description">
+                A beginner series focused on security awareness, threats, and basic defense.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtube.com/playlist?list=PL9ooVrP1hQOGPQVeapGsJCktzIO4DtI4_&si=zdRx0_dUjXRvpE7u" target="_blank" rel="noopener noreferrer">Cyber Security Training for Beginners | Edureka</a>
+              <span class="resource-description">
+                A broad overview of cybersecurity domains, tools, and career paths.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- AI Ethics -->
+        <div class="topic-section">
+          <h4>AI Ethics</h4>
+          
+          <p><span class="category-badge badge-courses">Courses</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.kaggle.com/learn/intro-to-ai-ethics" target="_blank" rel="noopener noreferrer">Intro to AI Ethics</a>
+              <span class="resource-description">
+                Introduces fairness, bias, and responsible AI through short, practical lessons.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://ethics-of-ai.mooc.fi/start" target="_blank" rel="noopener noreferrer">Ethics of AI</a>
+              <span class="resource-description">
+                Explores ethical challenges in AI systems, including privacy and accountability.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://aiethicscourse.org/modules" target="_blank" rel="noopener noreferrer">AI Ethics Lectures</a>
+              <span class="resource-description">
+                A modular course that examines AI ethics from social, legal, and technical angles.
+              </span>
+            </li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="section-divider"></div>
+
+      <!-- ============================================
+           CAPSTONE & CAREER PREP
+           ============================================ -->
+      <section id="capstone-career" class="major-section">
+        <h2 class="major-section-header">💾 Capstone &amp; Career Prep</h2>
+
+        <!-- Capstone Project / Thesis -->
+        <div class="topic-section">
+          <h4>Capstone Project / Thesis</h4>
+          
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://edubirdie.com/blog/computer-science-capstone-project-ideas" target="_blank" rel="noopener noreferrer">100 Best Computer Science Capstone Project Ideas</a>
+              <span class="resource-description">
+                A curated list of project ideas across various CS domains.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://domyessay.com/blog/capstone-project-ideas" target="_blank" rel="noopener noreferrer">Capstone Project Ideas: 150 Top Picks for Students</a>
+              <span class="resource-description">
+                A broad collection of project ideas for final-year students.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://www.eimt.edu.eu/top-20-project-ideas-and-topics-for-computer-science-students" target="_blank" rel="noopener noreferrer">Top 50 Computer Science Project Ideas and Topics for Final Year Students</a>
+              <span class="resource-description">
+                Focused project suggestions with practical implementation potential.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Career Paths in Tech -->
+        <div class="topic-section">
+          <h4>Career Paths in Tech</h4>
+          
+          <p><span class="category-badge badge-reading">Reading Materials</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://www.ttecjobs.com/en/it-and-tech-jobs-in-the-philippines-most-in-demand-roles-and-salary-expectations" target="_blank" rel="noopener noreferrer">IT &amp; Tech Jobs in the Philippines: Most In-Demand Roles &amp; Salary Expectations</a>
+              <span class="resource-description">
+                An overview of tech job opportunities and expected salaries in the Philippines.
+              </span>
+            </li>
+          </ul>
+
+          <p><span class="category-badge badge-lectures">Lecture Videos</span></p>
+          <ul class="resource-list">
+            <li>
+              <a class="resource-title" href="https://youtu.be/fCvFa2LSSbc?si=ouu1KdsJ5lHK2EUr" target="_blank" rel="noopener noreferrer">Day in the Life of a Fresh Grad Software Developer in Makati, Philippines</a>
+              <span class="resource-description">
+                A realistic look at what early-career software development looks like in the Philippines.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/cLOk145tuPs?si=9a8E13nsUdIIhph2" target="_blank" rel="noopener noreferrer">Careers for Computer Science Graduates</a>
+              <span class="resource-description">
+                Explores different career paths available to CS graduates.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/ZGZh6FX9GjU?si=GROCKdBraSBE5ljA" target="_blank" rel="noopener noreferrer">Careers for Information Technology Graduates</a>
+              <span class="resource-description">
+                Focuses on IT-specific career options and opportunities.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/PPuBifBtA3I?si=AXazP0f8Amm65DKd" target="_blank" rel="noopener noreferrer">Careers for Computer Engineering Graduates</a>
+              <span class="resource-description">
+                Discusses career paths for those with a computer engineering background.
+              </span>
+            </li>
+            <li>
+              <a class="resource-title" href="https://youtu.be/o-sS4187hQY?si=Y-kVo6B4vrbl5a6o" target="_blank" rel="noopener noreferrer">Q&amp;A with my friends in IT Industry</a>
+              <span class="resource-description">
+                Real insights from professionals working in the IT industry.
+              </span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Open Source & Filipino Tech Communities -->
+        <div class="topic-section">
+          <h4>Open Source &amp; Filipino Tech Communities</h4>
+          <p style="color: var(--color-text-light); font-style: italic;">
+            Coming soon — resources for getting involved in open source and connecting with Filipino tech communities.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ============================================
+         FOOTER
+         ============================================ -->
+    <footer style="margin-top: var(--spacing-xl); padding-top: var(--spacing-lg); border-top: 1px solid var(--color-border); text-align: center; color: var(--color-text-light);">
+      <p>
+        Made with love for the Filipino CompSci community.<br>
+        This is an open-source project. Contribute or suggest resources!
+      </p>
+    </footer>
+
+  </div>
+</body>
+</html>
